@@ -5,17 +5,14 @@ from . import views
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    # 1. ルートURL (/) にアクセスした時、自動的に login へリダイレクト
-    path('', RedirectView.as_view(pattern_name='login', permanent=False), name='index'),
-
-    # 2. メイン機能のルーティング（knowledge/ が不要になります）
-    path('home/', views.home, name='home'),
-    path('articles/', views.knowledge_list, name='knowledge_list'),
-    path('tags/<str:tag_name>/', views.tag_posts, name='tag_posts'),
-    path('new/', views.knowledge_create, name='knowledge_create'),
+    path('',views.home, name='home'),
+    path('arigicles/', views.knowledge_list, name='knowledge_list'),
+    path('tag/<str:tag_name>/', views.tag_posts,name='tag_posts'),
+    path('new/',views.knowledge_create, name='knowledge_create'),
+    path('edit/<int:pk>/', views.knowledge_edit, name='knowledge_edit'),
     path('mypage/', views.mypage, name='mypage'),
-    
-    # 3. 個別データに対するルーティング
+    path('mypage/edit/', views.profile_edit, name='profile_edit'),
+    path('delete/<int:pk>/', views.delete_post, name='delete_post'),
     path('<int:pk>/', views.knowledge_detail, name='knowledge_detail'),
     path('<int:pk>/comment/', views.add_comment, name='add_comment'),
     path('delete/<int:pk>/', views.delete_post, name='delete_post'),

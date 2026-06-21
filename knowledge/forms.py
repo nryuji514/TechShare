@@ -1,5 +1,5 @@
 from django import forms
-from .models import Knowledge, Comment
+from .models import Knowledge, Comment, Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -14,6 +14,14 @@ class CommentForm(forms.ModelForm):
         fields=['text']
         widgets={
             'text':forms.Textarea(attrs={'row':3}),
+        }
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4}),
         }
 
 class RegisterForm(UserCreationForm):

@@ -2,20 +2,20 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'knowledge/css/form.css' %}">
-<title>新規投稿</title>
+<title>{% if is_edit %}投稿編集{% else %}新規投稿{% endif %}</title>
 
 <div class="form-container">
 
-    <h1>新規投稿</h1>
+    <h1>{% if is_edit %}投稿編集{% else %}新規投稿{% endif %}</h1>
 
-    <form method="post" action="{% url 'knowledge_create' %}">
+    <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
 
-        <input type="text" name="tag_input" placeholder="タグをカンマ区切りで入力">
-        
+        <input type="text" name="tag_input" placeholder="タグをカンマ区切りで入力" value="{{ tag_value|default:'' }}">
+
         <button type="submit" class="submit-btn">
-            投稿する
+            {% if is_edit %}更新する{% else %}投稿する{% endif %}
         </button>
 
     </form>

@@ -20,7 +20,12 @@
         {% empty %}
             タグなし
         {% endfor %}
-    </p>  </div>
+    </p>
+    </div>
+
+    {% if post.author == user %}
+        <p><a href="{% url 'knowledge_edit' post.pk %}" class="edit-link">この投稿を編集</a></p>
+    {% endif %}
 </div>
 
 <div class="card">

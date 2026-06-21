@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Knowledge, Tag  # 不要なPostモデルは除外
-from .forms import KnowledgeForm, CommentForm
+
+from .models import Knowledge, Tag, Profile
+from .forms import KnowledgeForm, CommentForm, ProfileForm
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 
 # ホーム画面表示（直近の5件をピックアップしてhome.htmlへ）
@@ -84,7 +86,41 @@ def knowledge_create(request):
 
     return render(request, 'knowledge_form.html', {'form': form})
 
-# コメント追加
+#投稿編集
+@login_required
+def knowledge_edit(request, pk):
+    post = get_object_or_404(Knowledge, pk=pk, author=request.user)
+
+    if request.method == 'POST':
+        form = KnowledgeForm(request.POST, instance=post)
+
+        if form.is_valid():
+            post = form.save()
+
+            post.tags.clear()
+            tag_text = request.POST.get("tag_input", "")
+            for t in tag_text.split(","):
+                t = t.strip()
+                if not t:
+                    continue
+
+                tag, _ = Tag.objects.get_or_create(name=t)
+                post.tags.add(tag)
+
+            return redirect('knowledge_detail', pk=post.pk)
+    else:
+        form = KnowledgeForm(instance=post)
+
+    tag_value = ", ".join(t.name for t in post.tags.all())
+
+    return render(request, 'knowledge_form.html', {
+        'form': form,
+        'is_edit': True,
+        'tag_value': tag_value,
+        'post': post,
+    })
+
+#コメント追加
 @login_required
 def add_comment(request, pk):
     post = get_object_or_404(Knowledge, pk=pk)
@@ -103,10 +139,29 @@ def add_comment(request, pk):
 # マイページ表示（ログインユーザー自身の投稿のみを抽出）
 @login_required
 def mypage(request):
+    Profile.objects.get_or_create(user=request.user)
     posts = Knowledge.objects.filter(author=request.user).order_by('-created_at')
     return render(request, 'mypage.html', {'posts': posts})
 
-# 投稿削除
+    return render(request, 'mypage.html', {'posts':posts})
+
+#プロフィール編集
+@login_required
+def profile_edit(request):
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect('mypage')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'profile_form.html', {'form': form})
+
+#投稿削除
 @login_required
 def delete_post(request, pk):
     post = get_object_or_404(Knowledge, pk=pk, author=request.user)
