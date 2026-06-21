@@ -56,7 +56,11 @@
                             <button type="submit" class="btn btn-outline btn-sm">編集</button>
                         </form>
 
-                        <form method="POST" action="{% url 'delete_post' post.pk %}">
+                        <!-- 削除フォーム。onsubmit の confirm で「本当に消す？」を1回はさむ。 -->
+                        <!-- OKを押したときだけ return true で送信され、キャンセルなら送信しない。 -->
+                        <!-- escapejs:タイトルに ' などが入っていてもJSが壊れないように変換する -->
+                        <form method="POST" action="{% url 'delete_post' post.pk %}"
+                              onsubmit="return confirm('「{{ post.title|escapejs }}」を削除します。よろしいですか？');">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm">削除</button>
                         </form>

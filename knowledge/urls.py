@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete/<int:pk>/', views.delete_post, name='delete_post'),
     path('<int:pk>/', views.knowledge_detail, name='knowledge_detail'),
     path('<int:pk>/comment/', views.add_comment, name='add_comment'),
+    path('<int:pk>/like/', views.toggle_like, name='toggle_like'),
     path('delete/<int:pk>/', views.delete_post, name='delete_post'),
     
     # 4. 認証系のルーティング

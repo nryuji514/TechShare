@@ -61,3 +61,88 @@ h2 {
 .tag:hover {
     background: #d6e7ff;
 }
+
+/* 投稿者の行（アバター＋名前＋日付） */
+.card-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.card-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card-author-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    margin: 0;
+}
+
+.card-date {
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+}
+
+/* 本文プレビュー */
+.card-excerpt {
+    color: #555 !important;
+    font-size: 14px !important;
+    line-height: 1.6;
+    margin-bottom: 14px !important;
+}
+
+/* カード下部（タグ ＋ いいね） */
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* いいねボタン（一覧用） */
+.card-footer .like-form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.like-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 999px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.like-btn:hover {
+    background: #fdf0f3;
+    border-color: #f5c2cd;
+}
+
+.like-btn.liked {
+    background: #fdf0f3;
+    border-color: #f5a8b8;
+}
+
+.like-count {
+    font-weight: bold;
+    color: #555;
+    font-size: 14px;
+}
