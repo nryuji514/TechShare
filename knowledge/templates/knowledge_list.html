@@ -5,9 +5,22 @@
 
 <h1>記事一覧</h1>
 
+<div class="search-container" style="margin-bottom: 20px;">
+    <form method="GET" action="{% url 'knowledge_list' %}">
+        <input type="text" name="q" value="{{ search_keyword }}" placeholder="タグを検索..." 
+               style="padding: 8px; width: 250px; border: 1px solid #ccc; border-radius: 4px;">
+        <button type="submit" 
+                style="padding: 8px 16px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            検索
+        </button>
+    </form>
+</div>
 {% if selected_tag %}
     <h2>#{{ selected_tag.name }}の記事一覧</h2>
+{% endif %}
 
+{% if search_keyword %}
+    <p>「{{ search_keyword }}」の検索結果: {{ posts|length }}件</p>
 {% endif %}
 
 {% for post in posts %}
@@ -24,6 +37,7 @@
         <a href="{% url 'tag_posts' tag.name %}" class="tag">#{{ tag.name }}</a>
     {% endfor %}
 </div>
-    
+{% empty %}
+    <p>該当する記事が見つかりませんでした。</p>
 {% endfor %}
 {% endblock %}
