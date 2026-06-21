@@ -1,0 +1,117 @@
+body {
+    background: #f5f7fa;
+    font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+/* 全体 */
+.mypage-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* プロフィールカード */
+.profile-card {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.profile-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+}
+
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 投稿カード */
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.post-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: 0.2s;
+    position: relative;
+}
+
+.post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.post-title {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.post-content {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* タグ & 日付 */
+.post-meta {
+    display: block;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.post-date {
+    font-size: 13px;
+    color: #888;
+}
+
+.tag {
+    background: #e8f1ff;
+    color: #4a90e2;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* 削除ボタン */
+.delete-btn {
+    background: #ff5252;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.delete-btn:hover {
+    background: #e04848;
+}

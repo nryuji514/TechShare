@@ -1,0 +1,63 @@
+/* ページタイトル */
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* タグ選択時のタイトル */
+h2 {
+    color: #4a90e2;
+    margin-bottom: 10px;
+}
+
+/* カード全体 */
+.card {
+    background: #fff;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+/* カードのホバー効果 */
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* 記事タイトル */
+.card h2 a {
+    text-decoration: none;
+    color: #333;
+    transition: 0.2s;
+}
+
+.card h2 a:hover {
+    color: #4a90e2;
+}
+
+/* 投稿日時 */
+.card p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* タグ */
+.tag {
+    display: inline-block;
+    background: #e8f1ff;
+    color: #4a90e2;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-decoration: none;
+    margin-right: 6px;
+    transition: 0.2s;
+}
+
+.tag:hover {
+    background: #d6e7ff;
+}

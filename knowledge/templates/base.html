@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>TechShare</title>
+
+    <link rel="stylesheet" href="{% static 'knowledge/css/base.css' %}">
+    
+</head>
+
+
+<body>
+    
+<header class="header">
+    <a href="{% url 'home' %}" class="logo">TechShare</a>
+
+    <nav class="nav">
+        <a href="{% url 'knowledge_list' %}">記事一覧</a>
+        <a href="{% url 'knowledge_create' %}">新規投稿</a>
+        <a href="{% url 'mypage' %}">マイページ</a>
+        <a href="{% url 'logout' %}">ログアウト</a>
+    </nav>
+</header>
+
+<main class="main-content">
+    {% block content %}
+    {% endblock %}
+</main>
+
+</body>
+</html>

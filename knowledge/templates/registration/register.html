@@ -1,0 +1,12 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'knowledge/css/register.css' %}">
+
+<h2>新規登録</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ form.errors }}
+    <button type="submit">登録</button>
+</form>

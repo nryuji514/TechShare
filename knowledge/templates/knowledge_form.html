@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'knowledge/css/form.css' %}">
+<title>新規投稿</title>
+
+<div class="form-container">
+
+    <h1>新規投稿</h1>
+
+    <form method="post" action="{% url 'knowledge_create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="text" name="tag_input" placeholder="タグをカンマ区切りで入力">
+        
+        <button type="submit" class="submit-btn">
+            投稿する
+        </button>
+
+    </form>
+</div>
+
+
+{% endblock %}

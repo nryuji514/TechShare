@@ -1,0 +1,125 @@
+/* ヒーローセクション */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, #4a90e2, #6bb4ff);
+    color: #fff;
+    border-radius: 12px;
+    margin-top: 40px;
+}
+
+/* 左側のテキスト */
+.hero-content {
+    max-width: 55%;
+}
+
+.hero-content h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.hero-content p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+/* ボタン */
+.article-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #fff;
+    color: #4a90e2;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.article-btn:hover {
+    background: #e6e6e6;
+}
+
+/* 右側の画像 */
+.hero-image img {
+    width: 300px;        /* ← 小さめにした */
+    height: 300px;       /* 正方形にする */
+    object-fit: cover;   /* 画像の比率を保ったままトリミング */
+    border-radius: 50%;  /* ← 完全な丸 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-image img {
+        margin-top: 30px;
+        width: 70%;
+    }
+}
+
+.home-article-list {
+    margin-top: 40px;
+    padding: 20px;
+    background: #e8f1ff;
+    border-radius: 10px;
+}
+
+.home-article-list h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    border-left: 4px solid #4a90e2;
+    padding-left: 10px;
+}
+
+.article-item {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.article-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.article-title:hover {
+    text-decoration: underline;
+}
+
+.meta {
+    margin-top: 5px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.date {
+    font-size: 12px;
+    color: #888;
+}
+
+.tag {
+    background: #e8f1ff;
+    color: #4a90e2;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+

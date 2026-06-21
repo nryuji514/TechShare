@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'knowledge/css/detail.css' %}">
+
+<div class="post-detail">
+
+
+    <h1>{{ post.title }}</h1>
+
+    <p>投稿者：{{ post.author.username }}</p>
+
+    <p>投稿日：{{ post.created_at }}</p>
+
+    <p>内容：{{ post.content }}</p>
+
+    <div class="tags">
+        タグ：{% for tag in post.tags.all %}
+            <span class="tag">#{{ tag.name }}</span>
+        {% empty %}
+            タグなし
+        {% endfor %}
+    </p>
+    </div>
+</div>
+
+<div class="card">
+
+<h2>コメント</h2>
+
+{% for comment in comments %}
+
+<div class="comment">
+    <strong>{{ comment.user.username }}</strong>
+
+    <p class="comment-date">{{ comment.created_at }}</p>
+
+    <p>{{ comment.text }}</p>
+</div>
+
+{% empty %}
+
+<p>コメントなし</p>
+{% endfor %}
+</div>
+
+<div class="card">
+
+<h3>コメントを書く</h3>
+
+<form method="POST" action="{% url 'add_comment' post.pk %}">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button type="submit">
+コメント投稿
+</button>
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

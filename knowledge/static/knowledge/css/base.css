@@ -1,0 +1,142 @@
+/* ===========================
+   ヘッダー
+=========================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 70px;
+
+    background: white;
+    border-bottom: 1px solid #ddd;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 16px;   /* ← 右に行きすぎ防止の決定打 */
+    z-index: 9999;
+}
+
+/* ロゴ */
+.logo {
+    text-decoration: none;
+    color: #2563ed;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* ナビゲーション */
+.nav {
+    display: flex;
+    gap: 20px;
+    margin-right: 40px;   /* ← margin-left を使わず gap で整列 */
+}
+
+.nav a {
+    color: #2563ed;
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 0;   /* ← これが超重要 */
+}
+
+.nav a:hover {
+    opacity: 0.7;
+}
+
+/* ===========================
+   メインコンテンツ
+=========================== */
+.main-content {
+    max-width: 900px;
+    margin: 100px auto 40px;  /* ← 固定ヘッダーのため余白を確保 */
+    padding: 0 20px;
+}
+
+/* ===========================
+   フォーム
+=========================== */
+.form-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.form-container h1 {
+    margin-bottom: 20px;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+/* 投稿ボタン */
+.submit-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1e4fcf;
+}
+
+/* ===========================
+   カード（一覧・コメント）
+=========================== */
+.card {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+/* ===========================
+   タグ
+=========================== */
+.tag {
+    display: inline-block;
+    background: #e8f1ff;
+    color: #2563ed;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-right: 6px;
+}
+
+/* ===========================
+   コメント
+=========================== */
+.comment {
+    background: #f7f9fc;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.comment strong {
+    color: #2563ed;
+    font-size: 15px;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #888;
+    margin: 4px 0 8px;
+}

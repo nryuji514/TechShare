@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'knowledge/css/home.css' %}">
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>技術を共有し、共に成長<br>しよう</h1>    
+        <p>
+            学んだ知識や技術を投稿し、<br>チーム全体でスキルアップを目指す、<br>ナレッジ共有サービスです
+        </p>
+
+        <a href="{% url 'knowledge_list' %}" class="article-btn">記事一覧を見る</a>
+    </div>
+    
+    <div class="hero-image">
+        <img src="{% static 'human.jpg' %}" alt="TechShare Hero">
+    </div>
+
+</section>
+
+<section class="home-article-list">
+    <h2>最近の記事</h2>
+
+    {% for post in posts %}
+        <div class="article-item">
+            <a href="{% url 'knowledge_detail' post.id %}" class="article-title">
+                {{ post.title }}
+            </a>
+
+            <div class="meta">
+                <span class="date">{{ post.created_at|date:"Y/m/d" }}</span>
+            
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'tag_posts' tag.name %}" class="tag">
+                        {{ tag.name }}
+                    </a>
+                {% empty %}
+                    <span class="tag">タグなし</span>
+                {% endfor %}
+            </div>
+            
+            
+        </div>
+    {% empty %}
+        <p>まだ記事がありません。</p>
+    {% endfor %}
+</section>
+{% endblock %}
