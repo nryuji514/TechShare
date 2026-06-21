@@ -128,6 +128,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL='/knowledge/'
+# ログイン成功後のリダイレクト先をホーム画面（name='home'）に指定
+LOGIN_REDIRECT_URL = 'home'
 
-LOGOUT_REDIRECT_URL='/login/'
+# （もしログアウト後の遷移先もログイン画面に固定したい場合は、以下も書くと便利です）
+LOGOUT_REDIRECT_URL = 'login'
