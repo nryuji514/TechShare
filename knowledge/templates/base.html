@@ -17,10 +17,12 @@
     <a href="{% url 'home' %}" class="logo">TechShare</a>
 
     <nav class="nav">
-        <a href="{% url 'knowledge_list' %}">記事一覧</a>
-        <a href="{% url 'knowledge_create' %}">新規投稿</a>
-        <a href="{% url 'mypage' %}">マイページ</a>
-        <a href="{% url 'logout' %}">ログアウト</a>
+        <a href="{% url 'knowledge_list' %}"
+           class="nav-link {% if request.resolver_match.url_name == 'knowledge_list' %}active{% endif %}">記事一覧</a>
+        <a href="{% url 'mypage' %}"
+           class="nav-link {% if request.resolver_match.url_name == 'mypage' %}active{% endif %}">マイページ</a>
+        <a href="{% url 'knowledge_create' %}" class="nav-cta">新規投稿</a>
+        <a href="{% url 'logout' %}" class="nav-logout">ログアウト</a>
     </nav>
 </header>
 

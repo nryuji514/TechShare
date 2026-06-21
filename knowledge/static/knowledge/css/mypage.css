@@ -9,28 +9,119 @@ body {
     margin: 0 auto;
 }
 
-/* プロフィールカード */
+/* ===========================
+   プロフィールカード
+=========================== */
 .profile-card {
     display: flex;
     align-items: center;
     background: #fff;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     margin-bottom: 30px;
 }
 
-.profile-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+/* アバター = 画像アップロードのボタン（ホバーで変更） */
+.avatar-uploader {
     margin-right: 20px;
 }
 
+.avatar-label {
+    position: relative;
+    display: block;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 rgba(74,144,226,0);
+    transition: box-shadow 0.2s;
+}
+
+.avatar-label:hover {
+    box-shadow: 0 0 0 3px rgba(74,144,226,0.4);
+}
+
+.profile-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.avatar-label:hover .avatar-overlay {
+    opacity: 1;
+}
+
 .profile-info h2 {
-    margin: 0;
+    margin: 0 0 6px;
     font-size: 22px;
     color: #333;
+}
+
+.profile-info p {
+    margin: 0 0 12px;
+    color: #555;
+    font-size: 15px;
+}
+
+/* ===========================
+   ボタン（サイト共通の青に統一）
+=========================== */
+.btn {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: 0.2s;
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+/* 主要操作の控えめ版：枠線ボタン */
+.btn-outline {
+    background: transparent;
+    color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+.btn-outline:hover {
+    background: #4a90e2;
+    color: #fff;
+}
+
+/* 削除：枠線の赤、ホバーで塗り */
+.btn-danger {
+    background: transparent;
+    color: #ff5252;
+    border-color: #ff5252;
+}
+
+.btn-danger:hover {
+    background: #ff5252;
+    color: #fff;
 }
 
 .section-title {
@@ -40,7 +131,9 @@ body {
     color: #333;
 }
 
-/* 投稿カード */
+/* ===========================
+   投稿カード
+=========================== */
 .posts-container {
     display: flex;
     flex-direction: column;
@@ -56,7 +149,7 @@ body {
     background: #fff;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transition: 0.2s;
     position: relative;
 }
@@ -80,7 +173,6 @@ body {
 /* タグ & 日付 */
 .post-meta {
     display: block;
-    justify-content: space-between;
     margin-bottom: 10px;
 }
 
@@ -98,20 +190,9 @@ body {
     margin-left: 5px;
 }
 
-/* 削除ボタン */
-.delete-btn {
-    background: #ff5252;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-}
-
-.delete-btn:hover {
-    background: #e04848;
+/* 投稿操作ボタン（編集・削除） */
+.post-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }

@@ -126,7 +126,7 @@ def profile_edit(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
 
         if form.is_valid():
             form.save()
@@ -135,6 +135,17 @@ def profile_edit(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'profile_form.html', {'form': form})
+
+#プロフィール画像アップロード（マイページから）
+@login_required
+def avatar_upload(request):
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST' and request.FILES.get('avatar'):
+        profile.avatar = request.FILES['avatar']
+        profile.save()
+
+    return redirect('mypage')
 
 #投稿削除
 @login_required

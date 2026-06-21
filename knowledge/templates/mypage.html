@@ -7,12 +7,23 @@
 
     <!-- プロフィール -->
     <div class="profile-card">
-        <img src="{% static 'dog.jpg' %}" class="profile-icon" alt="icon">
+        <form method="POST" action="{% url 'avatar_upload' %}" enctype="multipart/form-data" class="avatar-uploader">
+            {% csrf_token %}
+            <label class="avatar-label" title="クリックして写真を変更">
+                {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" class="profile-icon" alt="プロフィール画像">
+                {% else %}
+                    <img src="{% static 'dog.jpg' %}" class="profile-icon" alt="プロフィール画像">
+                {% endif %}
+                <span class="avatar-overlay">写真を変更</span>
+                <input type="file" name="avatar" accept="image/*" onchange="this.form.submit()" hidden>
+            </label>
+        </form>
 
         <div class="profile-info">
             <h2>{{ user.username }}</h2>
             <p>{{ user.profile.bio }}</p>
-            <a href="{% url 'profile_edit' %}" class="edit-profile-link">プロフィールを編集</a>
+            <a href="{% url 'profile_edit' %}" class="btn btn-outline">プロフィールを編集</a>
         </div>
     </div>
 
@@ -39,18 +50,17 @@
                             {% endfor %}
                         </span>
                     </div>
-                    
-                    <br>
-                    <br>
 
-                    <form method="GET" action="{% url 'knowledge_edit' post.pk %}">
-                        <button type="submit" class="edit-btn">編集</button>
-                    </form>
+                    <div class="post-actions">
+                        <form method="GET" action="{% url 'knowledge_edit' post.pk %}">
+                            <button type="submit" class="btn btn-outline btn-sm">編集</button>
+                        </form>
 
-                    <form method="POST" action="{% url 'delete_post' post.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-btn">削除</button>
-                    </form>
+                        <form method="POST" action="{% url 'delete_post' post.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                        </form>
+                    </div>
                 </div>
             </a>
         {% empty %}

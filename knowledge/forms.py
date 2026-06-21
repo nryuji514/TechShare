@@ -19,8 +19,13 @@ class CommentForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio']
+        fields = ['avatar', 'bio']
+        labels = {
+            'avatar': 'プロフィール画像',
+            'bio': '自己紹介',
+        }
         widgets = {
+            'avatar': forms.FileInput(),
             'bio': forms.Textarea(attrs={'rows': 4}),
         }
 

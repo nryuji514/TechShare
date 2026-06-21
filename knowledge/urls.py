@@ -10,6 +10,7 @@ urlpatterns = [
     path('edit/<int:pk>/', views.knowledge_edit, name='knowledge_edit'),
     path('mypage/', views.mypage, name='mypage'),
     path('mypage/edit/', views.profile_edit, name='profile_edit'),
+    path('mypage/avatar/', views.avatar_upload, name='avatar_upload'),
     path('delete/<int:pk>/', views.delete_post, name='delete_post'),
     path('<int:pk>/', views.knowledge_detail, name='knowledge_detail'),
     path('<int:pk>/comment/',views.add_comment, name='add_comment'),
