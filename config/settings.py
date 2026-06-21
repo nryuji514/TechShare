@@ -127,6 +127,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Uploaded files (e.g. profile pictures)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 LOGIN_URL = '/login/'
 # ログイン成功後のリダイレクト先をホーム画面（name='home'）に指定
 LOGIN_REDIRECT_URL = 'home'

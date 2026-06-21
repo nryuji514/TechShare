@@ -36,6 +36,25 @@
     margin-right: 6px;
 }
 
+/* 編集リンク（投稿者のみ表示） */
+.edit-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: transparent;
+    color: #4a90e2;
+    border: 1px solid #4a90e2;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.edit-link:hover {
+    background: #4a90e2;
+    color: #fff;
+}
+
 /* コメントカード */
 .card {
     background: #fff;
