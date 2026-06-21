@@ -116,3 +116,65 @@
     color: #888;
     margin: 4px 0 8px;
 }
+
+/* 投稿者の行（アバター＋名前） */
+.author-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* いいねボタン */
+.like-form {
+    margin-top: 18px;
+}
+
+.like-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 999px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.like-btn:hover {
+    background: #fdf0f3;
+    border-color: #f5c2cd;
+}
+
+.like-btn.liked {
+    background: #fdf0f3;
+    border-color: #f5a8b8;
+}
+
+.like-count {
+    font-weight: bold;
+    color: #555;
+}
+
+/* コメントのアバター */
+.comment-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}

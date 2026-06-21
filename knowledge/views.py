@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Knowledge, Tag, Profile
+from .models import Knowledge, Tag, Profile, Like
 from .forms import KnowledgeForm, CommentForm, ProfileForm
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
@@ -26,9 +26,19 @@ def knowledge_list(request):
         # キーワードがない場合は全件取得
         posts = Knowledge.objects.all().order_by('-created_at')
 
+    # ログインユーザーがすでにいいね済みの投稿IDの一覧（テンプレートで判定に使う）
+    # 一覧の各カードで「この投稿はいいね済み？」を出したいが、1件ずつDBに聞くと
+    # 投稿の数だけクエリが飛んでしまう。なので「いいね済みのIDだけ」をまとめて1回取得し、
+    # set（集合）にしておく。テンプレート側では post.id in liked_ids で一瞬で判定できる。
+    # values_list(..., flat=True) は、IDだけを平らなリストで取り出すための書き方。
+    liked_ids = set(
+        Like.objects.filter(user=request.user, knowledge__in=posts).values_list('knowledge_id', flat=True)
+    )
+
     return render(request, 'knowledge_list.html', {
         'posts': posts,
         'search_keyword': search_keyword,  # 検索窓に入力した文字を保持するためにテンプレートへ渡す
+        'liked_ids': liked_ids,
     })
 
 # タグ別記事一覧表示（特定のタグでフィルタリングしてknowledge_list.htmlを再利用）
@@ -37,13 +47,19 @@ def tag_posts(request, tag_name):
     tag = get_object_or_404(Tag, name=tag_name)
     # Knowledgeモデルから指定されたタグを持つ投稿を逆引きして取得
     posts = Knowledge.objects.filter(tags=tag).order_by('-created_at')
-    
+
+    # 一覧と同じく、いいね済みの投稿IDをまとめて取っておく（知識一覧テンプレートを使い回すため）
+    liked_ids = set(
+        Like.objects.filter(user=request.user, knowledge__in=posts).values_list('knowledge_id', flat=True)
+    )
+
     return render(
-        request, 
-        'knowledge_list.html', 
+        request,
+        'knowledge_list.html',
         {
-            'posts': posts, 
-            'selected_tag': tag
+            'posts': posts,
+            'selected_tag': tag,
+            'liked_ids': liked_ids,
         }
     )
 
@@ -53,12 +69,47 @@ def knowledge_detail(request, pk):
     post = get_object_or_404(Knowledge, pk=pk)
     comments = post.comments.all()
     form = CommentForm()
-    
+
+    # いいねの総数。post.likes は Like モデルの related_name なので、ここで件数を数える
+    likes_count = post.likes.count()
+    # 今ログインしている人がこの投稿にいいね済みかどうか。
+    # exists() は「1件でもあるか？」だけを見るので、件数を全部取るより軽い
+    is_liked = post.likes.filter(user=request.user).exists()
+
     return render(request, 'knowledge_detail.html', {
         'post': post,
         'comments': comments,
-        'form': form
+        'form': form,
+        'likes_count': likes_count,
+        'is_liked': is_liked,
     })
+
+
+# いいねの切り替え（押すと付く／もう一度押すと外れる）
+@login_required
+def toggle_like(request, pk):
+    """
+    いいねボタンを押したときの処理。
+    まだ押していなければ付ける、もう押していれば外す（トグル）。
+    """
+    post = get_object_or_404(Knowledge, pk=pk)
+
+    if request.method == 'POST':
+        # get_or_create:あれば取ってくる、無ければ新しく作る。
+        # created は「今このとき新しく作ったか？」のTrue/False。
+        like, created = Like.objects.get_or_create(knowledge=post, user=request.user)
+        if not created:
+            # created=False = もともと存在した = すでにいいね済み。
+            # なので今回押したのは「取り消し」の意味になり、ここで削除する。
+            like.delete()
+
+    # HTTP_REFERER は「どのページから来たか」のURL。
+    # これを使うことで、一覧から押したら一覧へ、詳細から押したら詳細へ戻せる。
+    next_url = request.META.get('HTTP_REFERER')
+    if next_url:
+        return redirect(next_url)
+    # 万一 REFERER が取れなかったときの保険として、詳細ページに戻す
+    return redirect('knowledge_detail', pk=pk)
 
 # 投稿作成
 @login_required
@@ -143,7 +194,6 @@ def mypage(request):
     posts = Knowledge.objects.filter(author=request.user).order_by('-created_at')
     return render(request, 'mypage.html', {'posts': posts})
 
-    return render(request, 'mypage.html', {'posts':posts})
 
 #プロフィール編集
 @login_required

@@ -8,9 +8,17 @@
 
     <h1>{{ post.title }}</h1>
 
-    <p>投稿者：{{ post.author.username }}</p>
+    <!-- 投稿者の行。アイコン（無ければ初期画像）と名前を横並びにする -->
+    <div class="author-line">
+        {% if post.author.profile.avatar %}
+            <img src="{{ post.author.profile.avatar.url }}" class="author-avatar" alt="{{ post.author.username }}">
+        {% else %}
+            <img src="{% static 'dog.jpg' %}" class="author-avatar" alt="{{ post.author.username }}">
+        {% endif %}
+        <span>投稿者：{{ post.author.username }}</span>
+    </div>
 
-    <p>投稿日：{{ post.created_at }}</p>
+    <p>投稿日：{{ post.created_at|date:"Y年n月j日 H:i" }}</p>
 
     <p>内容：{{ post.content }}</p>
 
@@ -20,8 +28,18 @@
         {% empty %}
             タグなし
         {% endfor %}
-    </p>
     </div>
+
+    <!-- ===== いいねボタン ===== -->
+    <!-- is_liked（views側で判定）が True なら❤️＋押された見た目、まだなら🤍にする -->
+    <!-- likes_count はこの投稿のいいね合計数 -->
+    <form method="POST" action="{% url 'toggle_like' post.pk %}" class="like-form">
+        {% csrf_token %}
+        <button type="submit" class="like-btn {% if is_liked %}liked{% endif %}">
+            {% if is_liked %}❤️{% else %}🤍{% endif %}
+            <span class="like-count">{{ likes_count }}</span>
+        </button>
+    </form>
 
     {% if post.author == user %}
         <p><a href="{% url 'knowledge_edit' post.pk %}" class="edit-link">この投稿を編集</a></p>
@@ -35,9 +53,17 @@
 {% for comment in comments %}
 
 <div class="comment">
-    <strong>{{ comment.user.username }}</strong>
+    <!-- コメントした人のアイコンと名前。投稿者と同じく、無ければ初期画像を出す -->
+    <div class="comment-head">
+        {% if comment.user.profile.avatar %}
+            <img src="{{ comment.user.profile.avatar.url }}" class="comment-avatar" alt="{{ comment.user.username }}">
+        {% else %}
+            <img src="{% static 'dog.jpg' %}" class="comment-avatar" alt="{{ comment.user.username }}">
+        {% endif %}
+        <strong>{{ comment.user.username }}</strong>
+    </div>
 
-    <p class="comment-date">{{ comment.created_at }}</p>
+    <p class="comment-date">{{ comment.created_at|date:"Y年n月j日 H:i" }}</p>
 
     <p>{{ comment.text }}</p>
 </div>
