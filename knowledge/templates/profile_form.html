@@ -8,8 +8,13 @@
 
     <h1>プロフィール編集</h1>
 
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
+
+        {% if form.instance.avatar %}
+            <img src="{{ form.instance.avatar.url }}" alt="現在のアイコン" width="120" style="border-radius:50%;">
+        {% endif %}
+
         {{ form.as_p }}
 
         <button type="submit" class="submit-btn">
