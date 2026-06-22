@@ -33,6 +33,7 @@ class Post(models.Model):
 class Knowledge(models.Model):
     title=models.CharField(verbose_name="タイトル",max_length=200)
     content=models.TextField(verbose_name="投稿内容")
+    image = models.ImageField(upload_to='knowledge_images/', blank=True, null=True)
     author=models.ForeignKey(User, on_delete=models.CASCADE,related_name='knowledges')
     tags=models.ManyToManyField(Tag, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

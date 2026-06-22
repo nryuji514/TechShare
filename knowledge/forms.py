@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class KnowledgeForm(forms.ModelForm):
     class Meta:
         model=Knowledge
-        fields=['title','content']
+        fields=['title','content', "image"]
 
 class CommentForm(forms.ModelForm):
     class Meta:

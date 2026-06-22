@@ -8,7 +8,7 @@
 
     <h1>{% if is_edit %}投稿編集{% else %}新規投稿{% endif %}</h1>
 
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data"> 
         {% csrf_token %}
         {{ form.as_p }}
 

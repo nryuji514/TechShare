@@ -196,3 +196,10 @@ body {
     gap: 10px;
     justify-content: flex-end;
 }
+
+.post-likes {
+    margin-left: 10px;
+    color: #e0527a;
+    font-weight: bold;
+    font-size: 13px;
+}

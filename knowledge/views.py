@@ -12,8 +12,13 @@ from django.db.models import Count
 # ホーム画面表示（直近の5件をピックアップしてhome.htmlへ）
 @login_required
 def home(request):
-    posts = Knowledge.objects.all().order_by('-created_at')[:5]
-    return render(request, 'home.html', {'posts': posts})
+    posts = list(Knowledge.objects.annotate(like_count=Count("likes")).order_by('-created_at')[:5])
+
+    liked_ids = set(
+        Like.objects.filter(user=request.user, knowledge_id__in=[p.id for p in posts]).values_list('knowledge_id', flat=True)
+    )
+
+    return render(request, 'home.html', {'posts': posts, 'liked_ids': liked_ids})
 
 # 記事一覧表示（全件をknowledge_list.htmlへ）
 @login_required
@@ -131,7 +136,7 @@ def toggle_like(request, pk):
 @login_required
 def knowledge_create(request):
     if request.method == 'POST':
-        form = KnowledgeForm(request.POST)
+        form = KnowledgeForm(request.POST,request.FILES)
 
         if form.is_valid():
             post = form.save(commit=False)
@@ -159,7 +164,7 @@ def knowledge_edit(request, pk):
     post = get_object_or_404(Knowledge, pk=pk, author=request.user)
 
     if request.method == 'POST':
-        form = KnowledgeForm(request.POST, instance=post)
+        form = KnowledgeForm(request.POST,request.FILES, instance=post)
 
         if form.is_valid():
             post = form.save()
@@ -209,8 +214,10 @@ def mypage(request):
     Profile.objects.get_or_create(user=request.user)
     posts = Knowledge.objects.filter(author=request.user).order_by('-created_at')
     
-    return render(request, 'mypage.html', {'posts': posts})
+    #各投稿のいいね数を集計
+    posts=posts.annotate(like_count=Count("likes"))
 
+    return render(request, 'mypage.html', {'posts': posts})
 
 #プロフィール編集
 @login_required
