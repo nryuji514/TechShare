@@ -3,11 +3,20 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    #表示する用の名前
+    display_name=models.CharField(max_length=50,blank=True)
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username
+
+    def name(self):
+        #表示名があるならそれをないならユーザー名を返す
+        if self.display_name:
+            return self.display_name
+        else:
+            return self.user.username
 
 class Tag(models.Model):
     name = models.CharField(max_length=50,unique=True)
@@ -22,8 +31,9 @@ class Post(models.Model):
 
 
 class Knowledge(models.Model):
-    title=models.CharField(max_length=200)
-    content=models.TextField()
+    title=models.CharField(verbose_name="タイトル",max_length=200)
+    content=models.TextField(verbose_name="投稿内容")
+    image = models.ImageField(upload_to='knowledge_images/', blank=True, null=True)
     author=models.ForeignKey(User, on_delete=models.CASCADE,related_name='knowledges')
     tags=models.ManyToManyField(Tag, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

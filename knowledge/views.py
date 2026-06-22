@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+
 from django.contrib.auth.decorators import login_required
 
 from .models import Knowledge, Tag, Profile, Like
@@ -6,17 +7,26 @@ from .forms import KnowledgeForm, CommentForm, ProfileForm
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 
+from django.db.models import Count
+
 # ホーム画面表示（直近の5件をピックアップしてhome.htmlへ）
 @login_required
 def home(request):
-    posts = Knowledge.objects.all().order_by('-created_at')[:5]
-    return render(request, 'home.html', {'posts': posts})
+    posts = list(Knowledge.objects.annotate(like_count=Count("likes")).order_by('-created_at')[:5])
+
+    liked_ids = set(
+        Like.objects.filter(user=request.user, knowledge_id__in=[p.id for p in posts]).values_list('knowledge_id', flat=True)
+    )
+
+    return render(request, 'home.html', {'posts': posts, 'liked_ids': liked_ids})
 
 # 記事一覧表示（全件をknowledge_list.htmlへ）
 @login_required
 def knowledge_list(request):
     # GETパラメーターから 'q' (検索キーワード) を取得。指定がない場合は空文字になる。
     search_keyword = request.GET.get('q', '')
+
+    sort=request.GET.get("sort","new")
 
     if search_keyword:
         # tags__name__icontains で、タグ名にキーワードが「含まれる」投稿をフィルタリング
@@ -25,6 +35,16 @@ def knowledge_list(request):
     else:
         # キーワードがない場合は全件取得
         posts = Knowledge.objects.all().order_by('-created_at')
+
+    #各投稿のいいね数を集計
+    posts  = posts.annotate(like_count=Count("likes"))
+
+    #どうやって並べるかによって並べ方を変える
+    if sort =="likes":
+        posts = posts.order_by("-like_count")
+    else:
+        posts = posts.order_by("-created_at")
+
 
     # ログインユーザーがすでにいいね済みの投稿IDの一覧（テンプレートで判定に使う）
     # 一覧の各カードで「この投稿はいいね済み？」を出したいが、1件ずつDBに聞くと
@@ -38,6 +58,7 @@ def knowledge_list(request):
     return render(request, 'knowledge_list.html', {
         'posts': posts,
         'search_keyword': search_keyword,  # 検索窓に入力した文字を保持するためにテンプレートへ渡す
+        'sort':sort,
         'liked_ids': liked_ids,
     })
 
@@ -115,7 +136,7 @@ def toggle_like(request, pk):
 @login_required
 def knowledge_create(request):
     if request.method == 'POST':
-        form = KnowledgeForm(request.POST)
+        form = KnowledgeForm(request.POST,request.FILES)
 
         if form.is_valid():
             post = form.save(commit=False)
@@ -143,7 +164,7 @@ def knowledge_edit(request, pk):
     post = get_object_or_404(Knowledge, pk=pk, author=request.user)
 
     if request.method == 'POST':
-        form = KnowledgeForm(request.POST, instance=post)
+        form = KnowledgeForm(request.POST,request.FILES, instance=post)
 
         if form.is_valid():
             post = form.save()
@@ -192,8 +213,11 @@ def add_comment(request, pk):
 def mypage(request):
     Profile.objects.get_or_create(user=request.user)
     posts = Knowledge.objects.filter(author=request.user).order_by('-created_at')
-    return render(request, 'mypage.html', {'posts': posts})
+    
+    #各投稿のいいね数を集計
+    posts=posts.annotate(like_count=Count("likes"))
 
+    return render(request, 'mypage.html', {'posts': posts})
 
 #プロフィール編集
 @login_required

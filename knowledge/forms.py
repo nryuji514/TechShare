@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class KnowledgeForm(forms.ModelForm):
     class Meta:
         model=Knowledge
-        fields=['title','content']
+        fields=['title','content', "image"]
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -19,8 +19,9 @@ class CommentForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio']
+        fields = ['display_name', 'avatar', 'bio']
         labels = {
+            'display_name': '表示名',
             'avatar': 'プロフィール画像',
             'bio': '自己紹介',
         }

@@ -22,6 +22,11 @@
 
     <p>内容：{{ post.content }}</p>
 
+    {% if post.image %}
+        <img src="{{ post.image.url }}" class="post-image" alt="{{ post.title }}">
+    {% endif %}
+
+
     <div class="tags">
         タグ：{% for tag in post.tags.all %}
             <span class="tag">#{{ tag.name }}</span>

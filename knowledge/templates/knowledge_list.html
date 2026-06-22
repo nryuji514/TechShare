@@ -8,12 +8,22 @@
 <div class="search-container" style="margin-bottom: 20px;">
     <form method="GET" action="{% url 'knowledge_list' %}">
         <input type="text" name="q" value="{{ search_keyword }}" placeholder="タグを検索..." 
-               style="padding: 8px; width: 250px; border: 1px solid #ccc; border-radius: 4px;">
+               style="padding: 8px; width: 250px; border: 1px solid #ccc; border-radius: 4px;">          
         <button type="submit" 
                 style="padding: 8px 16px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer;">
             検索
         </button>
     </form>
+
+    <!-- 投稿を新着順といいね順で並び替える -->
+    <div class = "sort-links" style ="margin-top:8px;">
+        並び替え：
+        <a href="?q={{ search_keyword }}&sort=new" class="sort-btn {% if sort == 'new' %}active{% endif %}">新着順</a>
+        <a href="?q={{ search_keyword }}&sort=likes" class="sort-btn {% if sort == 'likes' %}active{% endif %}">いいね数順</a>
+
+
+    </div>
+
 </div>
 {% if selected_tag %}
     <h2>#{{ selected_tag.name }}の記事一覧</h2>
@@ -41,9 +51,13 @@
         {% else %}
             <img src="{% static 'dog.jpg' %}" class="card-avatar" alt="{{ post.author.username }}">
         {% endif %}
-        <span class="card-author-name">{{ post.author.username }}</span>
+        <span class="card-author-name">{{ post.author.profile.name }}</span>
         <span class="card-date">{{ post.created_at|date:"Y年n月j日" }}</span>
     </div>
+
+    {% if post.image %}
+        <img src="{{ post.image.url }}" class="card-image" alt="{{ post.title }}">
+    {% endif %}
 
     <!-- 本文のプレビュー。truncatewords:40 で最初の40単語までにして、続きは … にする -->
     <p class="card-excerpt">{{ post.content|truncatewords:40 }}</p>
