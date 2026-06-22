@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
+
 from django.contrib.auth.decorators import login_required
 
 from .models import Knowledge, Tag, Profile, Like
 from .forms import KnowledgeForm, CommentForm, ProfileForm
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
+
+from django.db.models import Count
 
 # ホーム画面表示（直近の5件をピックアップしてhome.htmlへ）
 @login_required
@@ -18,6 +21,8 @@ def knowledge_list(request):
     # GETパラメーターから 'q' (検索キーワード) を取得。指定がない場合は空文字になる。
     search_keyword = request.GET.get('q', '')
 
+    sort=request.GET.get("sort","new")
+
     if search_keyword:
         # tags__name__icontains で、タグ名にキーワードが「含まれる」投稿をフィルタリング
         # .distinct() は、1つの投稿に複数の検索ヒットタグがあった場合の重複表示を防ぐお作法です
@@ -25,6 +30,16 @@ def knowledge_list(request):
     else:
         # キーワードがない場合は全件取得
         posts = Knowledge.objects.all().order_by('-created_at')
+
+    #各投稿のいいね数を集計
+    posts  = posts.annotate(like_count=Count("likes"))
+
+    #どうやって並べるかによって並べ方を変える
+    if sort =="likes":
+        posts = posts.order_by("-like_count")
+    else:
+        posts = posts.order_by("-created_at")
+
 
     # ログインユーザーがすでにいいね済みの投稿IDの一覧（テンプレートで判定に使う）
     # 一覧の各カードで「この投稿はいいね済み？」を出したいが、1件ずつDBに聞くと
@@ -38,6 +53,7 @@ def knowledge_list(request):
     return render(request, 'knowledge_list.html', {
         'posts': posts,
         'search_keyword': search_keyword,  # 検索窓に入力した文字を保持するためにテンプレートへ渡す
+        'sort':sort,
         'liked_ids': liked_ids,
     })
 
@@ -192,6 +208,7 @@ def add_comment(request, pk):
 def mypage(request):
     Profile.objects.get_or_create(user=request.user)
     posts = Knowledge.objects.filter(author=request.user).order_by('-created_at')
+    
     return render(request, 'mypage.html', {'posts': posts})
 
 
