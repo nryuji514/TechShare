@@ -1,0 +1,69 @@
+---
+config:
+  layout: elk
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Meiryo, sans-serif"
+    fontSize: "16px"
+    lineColor: "#7a7a7a"
+---
+erDiagram
+    ユーザー ||--o| プロフィール : "1対1（プロフィールを持つ）"
+    ユーザー ||--o{ 記事         : "1対多（記事を書く）"
+    ユーザー ||--o{ コメント     : "1対多（コメントする）"
+    ユーザー ||--o{ いいね       : "1対多（いいねする）"
+
+    記事 ||--o{ コメント       : "1対多（コメントが付く）"
+    記事 ||--o{ いいね         : "1対多（いいねが付く）"
+    記事 }o--o{ タグ           : "多対多（タグで分類）"
+
+    ユーザー {
+        int id PK "ユーザーID"
+        string username UK "ユーザー名（重複不可）"
+        string password "パスワード（暗号化して保存）"
+    }
+
+    プロフィール {
+        int id PK "プロフィールID"
+        int user_id FK "どのユーザーのものか"
+        string display_name "表示名"
+        text bio "自己紹介"
+        image avatar "プロフィール画像"
+    }
+
+    記事 {
+        int id PK "記事ID"
+        string title "タイトル"
+        text content "本文"
+        image image "添付画像"
+        int author_id FK "書いた人（ユーザー）"
+        datetime created_at "作成日時"
+        datetime update_at "更新日時"
+    }
+
+    タグ {
+        int id PK "タグID"
+        string name UK "タグ名（重複不可）"
+    }
+
+    コメント {
+        int id PK "コメントID"
+        int knowledge_id FK "どの記事へのコメントか"
+        int user_id FK "コメントした人"
+        text text "コメント本文"
+        datetime created_at "作成日時"
+    }
+
+    いいね {
+        int id PK "いいねID"
+        int knowledge_id FK "どの記事へのいいねか"
+        int user_id FK "いいねした人"
+        datetime created_at "押した日時"
+    }
+
+    style ユーザー fill:#CFE2FF,stroke:#084298,color:#084298
+    style プロフィール fill:#CFE2FF,stroke:#084298,color:#084298
+    style 記事 fill:#D1E7DD,stroke:#0F5132,color:#0F5132
+    style タグ fill:#D1E7DD,stroke:#0F5132,color:#0F5132
+    style コメント fill:#F8D7DA,stroke:#842029,color:#842029
+    style いいね fill:#F8D7DA,stroke:#842029,color:#842029

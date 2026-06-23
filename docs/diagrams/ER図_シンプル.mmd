@@ -1,0 +1,43 @@
+---
+config:
+  layout: elk
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Meiryo, sans-serif"
+    fontSize: "20px"
+    lineColor: "#7a7a7a"
+---
+erDiagram
+    ユーザー ||--o| プロフィール : "1対1（プロフィールを持つ）"
+    ユーザー ||--o{ 記事         : "1対多（記事を書く）"
+    ユーザー ||--o{ コメント     : "1対多（コメントする）"
+    記事     ||--o{ コメント     : "1対多（コメントが付く）"
+
+    ユーザー {
+        int id PK "利用者の番号"
+        string username "ログイン名"
+    }
+
+    プロフィール {
+        int user_id FK "どの利用者か"
+        string display_name "画面に出す名前"
+        image avatar "アイコン画像"
+    }
+
+    記事 {
+        int id PK "記事の番号"
+        string title "タイトル"
+        text content "本文"
+        int author_id FK "書いた人"
+    }
+
+    コメント {
+        int knowledge_id FK "どの記事への返事か"
+        int user_id FK "書いた人"
+        text text "コメントの内容"
+    }
+
+    style ユーザー fill:#CFE2FF,stroke:#084298,color:#084298
+    style プロフィール fill:#CFE2FF,stroke:#084298,color:#084298
+    style 記事 fill:#D1E7DD,stroke:#0F5132,color:#0F5132
+    style コメント fill:#F8D7DA,stroke:#842029,color:#842029
